@@ -1,216 +1,625 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PlayBonus Hub</title>
+<title>PlayBonus Hub - Earn Daily</title>
 
 <style>
-body { margin:0; font-family:Arial; background:#f2f2f2; }
-
-.header {
-  background:red;
-  color:white;
-  padding:10px;
-  text-align:center;
+body{
+margin:0;
+font-family:sans-serif;
+background:#0f172a;
+color:white;
 }
 
-/* Banner */
-.banner img {
-  width:100%;
-  height:180px;
-  object-fit:cover;
+/* TOP BAR */
+.topbar{
+background:#00ff99;
+color:black;
+text-align:center;
+padding:6px;
+font-size:14px;
+animation:blink 2s infinite;
+}
+@keyframes blink{
+0%,100%{opacity:1;}
+50%{opacity:0.6;}
 }
 
-.title {
-  padding:15px;
-  font-size:22px;
-  font-weight:bold;
+/* HEADER */
+.header{
+display:flex;
+justify-content:space-between;
+padding:12px;
+background:#111827;
+}
+.logo{color:#00ff99;font-weight:bold;}
+.menu{cursor:pointer;}
+
+/* HERO */
+.hero{
+position:relative;
+height:195px;
+overflow:hidden;
+}
+.hero img{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:brightness(0.6);
+}
+.overlay{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+}
+.overlay h1{
+color:#00ff99;
+text-shadow:0 0 10px #00ff99;
+}
+.overlay p{
+letter-spacing:2px;
 }
 
-.card {
-  position: relative;
-  background:#fff;
-  margin:12px;
-  padding:15px;
-  border-radius:15px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+/* SECTION */
+.section{padding:15px;}
+
+/* SEARCH + FILTER */
+.top-controls{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-bottom:10px;
+}
+#searchInput, #filterSelect{
+padding:8px;
+border-radius:6px;
+border:none;
+}
+.live-users{
+color:#00ff99;
+font-size:12px;
 }
 
-.left {
-  display:flex;
-  align-items:center;
+/* GRID */
+.apps-container{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
 }
 
-.left img {
-  width:50px;
-  height:50px;
-  border-radius:10px;
-  margin-right:10px;
+/* CARD */
+.app-card{
+background:#1e293b;
+border-radius:10px;
+overflow:hidden;
+text-align:center;
+transition:0.3s;
+}
+.app-card:hover{
+transform:scale(1.03);
+box-shadow:0 0 15px #00ff99;
+}
+.app-card img{
+width:100%;
+height:120px;
+object-fit:cover;
+}
+.app-card h3{color:#00ff99;font-size:14px;}
+.app-card p{font-size:12px;color:#ddd;}
+.btn{
+display:inline-block;
+background:#00ff99;
+color:black;
+padding:5px 10px;
+margin:5px;
+border-radius:6px;
+text-decoration:none;
+font-size:12px;
 }
 
-.info h3 { margin:0; font-size:16px; }
-.info p { margin:2px 0; font-size:13px; }
-
-.btn {
-  background:black;
-  color:white;
-  padding:10px 18px;
-  border-radius:10px;
-  text-decoration:none;
-  font-weight:bold;
+/* ADS */
+.ads-box{
+background:#111;
+padding:15px;
+text-align:center;
+border-radius:10px;
+box-shadow:0 0 10px #00ff99;
 }
 
-.number {
-  position:absolute;
-  top:5px;
-  left:5px;
-  background:red;
-  color:white;
-  border-radius:50%;
-  width:20px;
-  height:20px;
-  text-align:center;
-  font-size:12px;
+/* FAQ */
+.faq-question{
+background:#222;
+padding:15px;
+margin-top:5px;
+cursor:pointer;
+border-radius:12px;
 }
 
-/* Footer */
-.footer {
-  background:#fff;
-  padding:15px;
-  margin-top:20px;
-  font-size:14px;
-  line-height:1.6;
+.faq-answer{
+display:none;
+padding:15px;
+background:#333;
+border-radius:10px;
+margin-top:5px;
 }
 
-textarea {
-  width:100%;
-  height:80px;
-  margin-top:10px;
+/* FORM */
+input,textarea{
+width:100%;
+padding:8px;
+margin:5px 0;
+border:none;
+border-radius:5px;
+}
+.submit{
+background:#00ff99;
+padding:10px;
+width:100%;
+border:none;
+cursor:pointer;
 }
 
-button {
-  margin-top:10px;
-  padding:8px 15px;
-  background:red;
-  color:white;
-  border:none;
-  border-radius:5px;
+/* SCROLL */
+#topBtn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#00ff99;
+padding:10px;
+border-radius:50%;
+display:none;
+cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
+<div class="topbar">🔥 Daily New Earning Apps 🔥</div>
+
 <div class="header">
-  <h2>🎯 PlayBonus Hub</h2>
-
+<div class="logo">PlayBonus Hub</div>
+<div class="menu" onclick="toggleMenu()">⋮</div>
 </div>
 
-<!-- Poster Banner -->
-<div class="banner">
-  <img src="https://i.ibb.co/q3d4P1TD/file-00000000b018720b927fef05ec7267c0.png">
+<div id="menuBox" style="display:none;position:absolute;right:10px;background:#222;padding:10px;">
+<p onclick="location.reload()">🔄 Refresh</p>
 </div>
 
-<div class="title">🔥 Win Big - Download Apps</div>
+<!-- HERO -->
+<div class="hero">
+<img src="https://i.ibb.co/q3d4P1TD/file-00000000b018720b927fef05ec7267c0.png">
+</div>
 
-<!-- (Apps yaha same rahenge jo tumne add kiye hain) -->
+<!-- ALL APPS -->
+<div class="section">
+<h2>🎮 All Apps</h2>
 
+<!-- CONTROLS -->
+<div class="top-controls">
+<input type="text" id="searchInput" placeholder="🔍 Search Apps...">
+<select id="filterSelect">
+<option value="all">All</option>
+<option value="new">New</option>
+<option value="high">High Bonus</option>
+</select>
+<div class="live-users">👥 Users: <span id="userCount">120</span></div>
+</div>
+
+<head>
+
+<style>
+
+.apps-list{
+display:flex;
+flex-direction:column;
+gap:12px;
+padding:10px;
+}
+
+.app-item{
+display:flex;
+align-items:center;
+background:#f1f1f1;
+border-radius:15px;
+padding:10px;
+position:relative;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.app-item img{
+width:60px;
+height:60px;
+border-radius:12px;
+margin-right:10px;
+}
+
+.app-info{
+flex:1;
+}
+
+.app-info h3{
+margin:0;
+font-size:16px;
+}
+
+.app-info p{
+margin:2px 0;
+font-size:13px;
+color:#555;
+}
+
+.download-btn{
+background:#000;
+color:#fff;
+padding:8px 14px;
+border-radius:20px;
+text-decoration:none;
+font-size:13px;
+}
+
+.rank{
+position:absolute;
+top:-5px;
+left:-5px;
+background:red;
+color:#fff;
+width:22px;
+height:22px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:12px;
+font-weight:bold;
+}
+
+</style>
+
+<head>
+
+<title>PlayBonus Hub - Earn Daily</title>
+
+<meta name="description" content="PlayBonus Hub provides high bonus earning apps and rummy apps. Play and earn money online. 18+ only.">
+<meta name="keywords" content="earning apps, rummy apps, bonus apps, play and earn, online earning India">
+<meta name="robots" content="index, follow">
+
+<style>
+
+/* 🔥 Apps List CSS */
+.apps-list{
+display:flex;
+flex-direction:column;
+gap:12px;
+padding:10px;
+}
+
+.app-item{
+display:flex;
+align-items:center;
+background:#f1f1f1;
+border-radius:15px;
+padding:10px;
+position:relative;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.app-item img{
+width:60px;
+height:60px;
+border-radius:12px;
+margin-right:10px;
+}
+
+.app-info{
+flex:1;
+}
+
+.app-info h3{
+margin:0;
+font-size:16px;
+}
+
+.app-info p{
+margin:2px 0;
+font-size:13px;
+color:#555;
+}
+
+.download-btn{
+background:#000;
+color:#fff;
+padding:8px 14px;
+border-radius:20px;
+text-decoration:none;
+font-size:13px;
+}
+
+.rank{
+position:absolute;
+top:-5px;
+left:-5px;
+background:red;
+color:#fff;
+width:22px;
+height:22px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:12px;
+font-weight:bold;
+}
+
+/* 🔥 Disclaimer CSS */
+.disclaimer{
+background:#f5f5f5;
+padding:15px;
+margin-top:20px;
+border-radius:12px;
+font-size:14px;
+color:#333;
+line-height:1.6;
+}
+
+.disclaimer h2{
+margin-bottom:10px;
+font-size:18px;
+}
+
+.disclaimer p{
+margin-bottom:10px;
+}
+
+</style>
+
+</head>
+<div class="apps-list">
+  
 <!-- App 1 -->
-<div class="card">
-<div class="number">1</div>
-<div class="left">
+<div class="app-item">
+<span class="rank">1</span>
 <img src="https://i.ibb.co/yBykBJzw/1773992741396.png">
-<div class="info">
+<div class="app-info">
 <h3>Hot Fire</h3>
 <p>🎁 Bonus ₹70</p>
 <p>💰 Min Withdraw ₹100</p>
 </div>
-</div>
-<a href="https://hotfiregaming.com/web/f?deep_link_value=4bccnuo" class="btn">Download</a>
+<a href="https://hotfiregaming.com/web/f?deep_link_value=4bccnuo" class="download-btn">Download</a>
 </div>
 
 <!-- App 2 -->
-<div class="card">
-<div class="number">2</div>
-<div class="left">
+<div class="app-item">
+<span class="rank">2</span>
 <img src="https://i.ibb.co/0Hr1VpF/images-1.jpg">
-<div class="info">
+<div class="app-info">
 <h3>Club INR</h3>
 <p>🎁 Bonus ₹100</p>
 <p>💰 Min Withdraw ₹100</p>
 </div>
-</div>
-<a href="https://clubinr4.com/?code=9VCLXRGXQ1T&t=1774001685" class="btn">Download</a>
+<a href="https://clubinr4.com/?code=9VCLXRGXQ1T&t=1774001685" class="download-btn">Download</a>
 </div>
 
 <!-- App 3 -->
-<div class="card">
-<div class="number">3</div>
-<div class="left">
+<div class="app-item">
+<span class="rank">3</span>
 <img src="https://i.ibb.co/PG5W5MKG/images-1.jpg">
-<div class="info">
+<div class="app-info">
 <h3>EK7</h3>
 <p>🎁 Bonus ₹50</p>
 <p>💰 Min Withdraw ₹100</p>
 </div>
-</div>
-<a href="#" class="btn">Download</a>
+<a href="#" class="download-btn">Download</a>
 </div>
 
 <!-- App 4 -->
-<div class="card">
-<div class="number">4</div>
-<div class="left">
+<div class="app-item">
+<span class="rank">4</span>
 <img src="https://i.ibb.co/ns6cDzWB/images-2.jpg">
-<div class="info">
+<div class="app-info">
 <h3>Jaiho Slots</h3>
 <p>🎁 Bonus ₹70</p>
 <p>💰 Min Withdraw ₹50</p>
 </div>
+<a href="https://dr4xbbzzccn7s.cloudfront.net/Agent.apk" class="download-btn">Download</a>
 </div>
-<a href="https://dr4xbbzzccn7s.cloudfront.net/Agent.apk" class="btn">Download</a>
+
+<!-- 5 -->
+<div class="app-item">
+<span class="rank">5</span>
+<img src="https://i.ibb.co/1JRf2Kfp/1774193044476.png">
+<div class="app-info">
+<h3>New Rummy</h3>
+<p>🎁 Bonus ₹110</p>
+<p>💰 Min Withdraw ₹100</p>
+</div>
+<a href="https://gamerummyn.com/?code=Q6WHCKQDDEN&t=1774192613" class="download-btn">Download</a>
 </div>
 
-<!-- Footer -->
-<div class="footer">
+<!-- 6 -->
+<div class="app-item">
+<span class="rank">6</span>
+<img src="https://i.ibb.co/4yqvb85/images-1.jpg">
+<div class="app-info">
+<h3>Top Rummy</h3>
+<p>🎁 Bonus ₹80</p>
+<p>💰 Min Withdraw ₹100</p>
+</div>
+<a href="https://toprummy.pw/?code=7K94LL8SY7T&t=1774191573" class="download-btn">Download</a>
+</div>
 
-<h3>⚠️ Disclaimer</h3>
+<!-- 7 -->
+<div class="app-item">
+<span class="rank">7</span>
+<img src="https://i.ibb.co/KTwHwvc/images-2.jpg">
+<div class="app-info">
+<h3>OK Rummy</h3>
+<p>🎁 Bonus ₹100</p>
+<p>💰 Min Withdraw ₹100</p>
+</div>
+<a href="https://www.okrummy19.com/?code=H2GNG3B279H&t=1774191705" class="download-btn">Download</a>
+</div>
 
-<p>
-PlayBonus Hub ek informational platform hai jahan hum third-party gaming aur earning apps ke links provide karte hain. Hum kisi bhi app ke owner, developer ya company se directly related nahi hain. Website par diye gaye sabhi apps external sources se belong karte hain aur unka control hamare paas nahi hai.
-</p>
+<!-- 8 -->
+<div class="app-item">
+<span class="rank">8</span>
+<img src="https://i.ibb.co/Pz333KZ4/images-3.jpg">
+<div class="app-info">
+<h3>Rummy Ludo</h3>
+<p>🎁 Bonus ₹110</p>
+<p>💰 Min Withdraw ₹100</p>
+</div>
+<a href="https://rummyludo1.com/?code=UWPTHTC5JMA&t=1774192295" class="download-btn">Download</a>
+</div>
 
-<p>
-User jab kisi bhi app ko download karta hai ya use karta hai, to wo apni zimmedari par karta hai. Hum kisi bhi tarah ke financial loss, data loss, ya account issue ke liye responsible nahi hain. Gaming apps me paisa invest karna risk bhara ho sakta hai, isliye hamesha soch samajh kar hi use karein.
-</p>
+<!-- 9 -->
+<div class="app-item">
+<span class="rank">9</span>
+<img src="https://i.ibb.co/1JRf2Kfp/1774193044476.png">
+<div class="app-info">
+<h3>New Rummy</h3>
+<p>🎁 Bonus ₹110</p>
+<p>💰 Min Withdraw ₹100</p>
+</div>
+<a href="https://gamerummyn.com/?code=Q6WHCKQDDEN&t=1774192613" class="download-btn">Download</a>
+</div>
 
-<p>
-Hum kisi bhi user ko paise lagane ke liye encourage nahi karte. Yeh website sirf information aur referral purpose ke liye banayi gayi hai. Agar kisi app me fraud, delay payment ya koi issue hota hai, to uski poori zimmedari us app ki hogi, na ki PlayBonus Hub ki.
-</p>
-
-<p>
-Kuch apps region-wise restricted ho sakti hain aur unka use karna aapke local law ke against ho sakta hai. Isliye user ko apne country/state ke rules check karna chahiye. Hum illegal activities ko support nahi karte.
-</p>
-
-<p>
-Website par diye gaye bonus, offers aur earning claims time ke saath change ho sakte hain. Hum unki accuracy ki guarantee nahi dete. Users ko khud verify karna chahiye before using any app.
-</p>
-
-<p>
-By using this website, you agree that you are using all services at your own risk. We do not take responsibility for any kind of loss or damage.
-</p>
-
-<h3>💬 Comments</h3>
-<textarea placeholder="Write your comment..."></textarea>
-<button>Post Comment</button>
-
-<h3>🚨 Report Issue</h3>
-<p>If you find any fake app or issue, contact us or report here.</p>
+<!-- 10 -->
+<div class="app-item">
+<span class="rank">10</span>
+<img src="https://i.ibb.co/bgYrWyr9/1774193334229.png">
+<div class="app-info">
+<h3>IND Rummy</h3>
+<p>🎁 Bonus ₹119</p>
+<p>💰 Min Withdraw ₹100</p>
+</div>
+<a href="https://indrummy1.com/?code=2BAMQSDS5M3&t=1774192992" class="download-btn">Download</a>
+</div>
 
 </div>
+<div class="disclaimer">
+
+<h2>⚠️ Disclaimer – PlayBonus Hub</h2>
+
+<p>
+PlayBonus Hub is an independent informational platform that provides details about third-party earning and gaming applications.
+</p>
+
+<p>
+We are not responsible for any loss, payment issues, or app-related problems.
+</p>
+
+<p>
+<strong>18+ Only:</strong> This content is only for users above 18 years.
+</p>
+
+<p>
+Use all apps at your own risk. We do not encourage gambling or investment.
+</p>
+
+</div>
+
+<!-- ADS -->
+<div class="section">
+<h2>📢 Ads</h2>
+<div class="ads-box">
+🔥 Promote Your App Here
+</div>
+</div>
+
+<!-- FAQ -->
+<div class="section">
+<h2>❓ FAQ</h2>
+<div class="faq-question" onclick="toggleFAQ(this)">Withdraw kaise kare?</div>
+<div class="faq-answer">App ke wallet se withdraw kare.</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFAQ(this)">Kya ye apps free bonus dete hain?</div>
+<div class="faq-answer">Haan, kuch apps signup bonus dete hain, lekin conditions apply ho sakti hain.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFAQ(this)">Kya bina deposit ke earning possible hai?</div>
+<div class="faq-answer">Kuch apps me limited earning possible hoti hai bina deposit ke, lekin jyada earning ke liye deposit zaroori ho sakta hai.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFAQ(this)">Withdraw kitne time me milta hai?</div>
+<div class="faq-answer">Withdraw time app ke hisaab se 5 minute se 24 hours tak ho sakta hai.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFAQ(this)">Kya sabhi apps trusted hain?</div>
+<div class="faq-answer">Sab apps third-party hain, isliye use karne se pehle khud verify karein.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFAQ(this)">Kya multiple accounts bana sakte hain?</div>
+<div class="faq-answer">Nahi, zyadatar apps multiple accounts allow nahi karte aur account block ho sakta hai.</div>
+</div>
+
+<!-- FORM -->
+<div class="section">
+<h2>📝 Report</h2>
+<input type="text" placeholder="Name">
+<textarea placeholder="Write report"></textarea>
+<button class="submit" onclick="submitForm()">Submit</button>
+<p id="msg"></p>
+</div>
+
+<div id="topBtn" onclick="topFunction()">⬆</div>
+
+<script>
+// MENU
+function toggleMenu(){
+let m=document.getElementById("menuBox");
+m.style.display=m.style.display=="block"?"none":"block";
+}
+
+// FAQ
+function toggleFAQ(el){
+let ans=el.nextElementSibling;
+ans.style.display=ans.style.display=="block"?"none":"block";
+}
+
+// FORM
+function submitForm(){
+document.getElementById("msg").innerText="✅ Submitted!";
+}
+
+// SCROLL BTN
+window.onscroll=function(){
+document.getElementById("topBtn").style.display=window.scrollY>200?"block":"none";
+};
+function topFunction(){
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+// SEARCH
+document.getElementById("searchInput").addEventListener("input",function(){
+let v=this.value.toLowerCase();
+document.querySelectorAll(".item").forEach(el=>{
+el.style.display=el.innerText.toLowerCase().includes(v)?"block":"none";
+});
+});
+
+// FILTER
+document.getElementById("filterSelect").addEventListener("change",function(){
+let v=this.value;
+document.querySelectorAll(".item").forEach(el=>{
+el.style.display=(v=="all"||el.dataset.type==v)?"block":"none";
+});
+});
+
+// LIVE USERS
+setInterval(()=>{
+document.getElementById("userCount").innerText=Math.floor(Math.random()*50)+100;
+},3000);
+
+</script>
 
 </body>
 </html>
